@@ -49,11 +49,7 @@ export default function Header() {
           <Link to='/projects'>Projects</Link>
         </Navbar.Link>
       </Navbar.Collapse>
-
-
       </Navbar>
-
-
   )
 }
 
