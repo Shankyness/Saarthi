@@ -23,7 +23,6 @@ export default function FooterCom() {
               <Footer.LinkGroup col>
                 <Footer.Link
                   href='/about'
-                  target='_blank'
                   rel='noopener noreferrer'
                 >
                   saarthi
