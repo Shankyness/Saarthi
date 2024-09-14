@@ -6,8 +6,18 @@ import authRoutes from './routes/auth.route.js';
 import PostRoutes from './routes/post.route.js';
 import commentRoutes from './routes/comment.route.js';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 dotenv.config();
 
+mongoose.connect(process.env.MONGO)
+.then(()=>{
+  console.log('MongoDB is connected');
+})
+.catch((err) => {
+  console.log(err);
+});
+
+const __dirname = path.resolve();
 
 const app = express();
 app.use(express.json());
@@ -16,6 +26,15 @@ app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes); 
 app.use('/api/post', PostRoutes);
 app.use('/api/comment', commentRoutes); 
+
+app.use(express.static(path.join(__dirname, '/frontend/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+});
+
+
+
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
@@ -24,13 +43,6 @@ app.use((err, req, res, next) => {
     statusCode,
     message,
   });
-});
-mongoose.connect(process.env.MONGO)
-.then(()=>{
-  console.log('MongoDB is connected');
-})
-.catch((err) => {
-  console.log(err);
 });
 
 app.listen(3000, () => {
