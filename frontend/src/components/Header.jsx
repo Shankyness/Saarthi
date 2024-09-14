@@ -25,6 +25,13 @@ export default function Header() {
       }
     }, [location.search]);
 
+
+    useEffect(() => {
+      if (!location.pathname.startsWith('/search')) {
+        setSearchTerm('');
+      }
+    }, [location.pathname]);
+
     const handleSignout = async () => {
       try {
         const res = await fetch('/api/user/signout', {
@@ -47,6 +54,7 @@ export default function Header() {
       urlParams.set("searchTerm", searchTerm);
       const searchQuery = urlParams.toString();
       navigate(`/search?${searchQuery}`);
+      setSearchTerm("");
     };
   
   return (
@@ -71,7 +79,7 @@ export default function Header() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
-      <Button className="w-12 h-10 lg:hidden" color="gray" pill >
+      <Button onClick={handleSubmit} className="w-12 h-10 lg:hidden" color="gray" pill >
         <AiOutlineSearch />
       </Button>
       <div className='flex gap-2 md:order-2'>
